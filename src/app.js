@@ -1,0 +1,31 @@
+import express from 'express';
+import httpStatus from 'http-status';
+import { connectDB } from './config/database.config';
+import { env } from './utils/helper.utils';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+connectDB()
+	.then(() => {
+		console.log('Database connecting ...');
+	})
+	.then(() => {
+		startApp();
+	})
+	.catch((error) => {
+		process.exit(1);
+	});
+
+function startApp() {
+	const app = express();
+	const port = env('APP_PORT') || 3000;
+
+	app.listen(port, () => {
+		console.log(`Server running ${env('APP_HOST')}:${port}`);
+	});
+
+	app.get('/', (req, res) => {
+		res.status(httpStatus.OK).json({ message: 'Chào mừng' });
+	});
+}
