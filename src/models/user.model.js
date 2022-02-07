@@ -13,6 +13,7 @@ const schema = new Schema(
 		uuid: { type: String, unique: true },
 		platform: { type: String, enum: ['ANDROID', 'IOS', 'WEB'], default: 'WEB' },
 		note: { type: String },
+		rememberToken: {type: String, required: true}
 	},
 	{ timestamps: true }
 );

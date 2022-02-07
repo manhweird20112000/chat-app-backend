@@ -30,6 +30,14 @@ async function register(payload) {
 			payload.username = v1();
 			payload.uuid = v4();
 
+			const refeshToken = jwt.sign(
+				{ ...payload, password: null },
+				env('JWT_SERECT'),
+				{ expiresIn: env('REFRESH_TOKEN_LIFE') }
+			);
+
+			payload.rememberToken = refeshToken;
+
 			const user = new User(payload);
 			await user.save();
 
@@ -40,6 +48,7 @@ async function register(payload) {
 			);
 		}
 	} catch (error) {
+		console.log(error);
 		throw new Error(error);
 	}
 }
@@ -82,4 +91,12 @@ async function login(payload) {
 	}
 }
 
-export const AuthServices = { register, login };
+async function logout(payload) {
+	try {
+		console.log(payload);
+	} catch (error) {
+		throw new Error(error);
+	}
+}
+
+export const AuthServices = { register, login, logout };
