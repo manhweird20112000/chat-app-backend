@@ -16,3 +16,9 @@ export const authLogin = {
 		password: Joi.string().required(),
 	}),
 };
+
+export const logout = {
+	body: Joi.object().keys({
+		token: Joi.string().required(),
+	}),
+};

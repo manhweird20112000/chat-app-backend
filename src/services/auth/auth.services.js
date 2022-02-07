@@ -93,7 +93,13 @@ async function login(payload) {
 
 async function logout(payload) {
 	try {
-		console.log(payload);
+		jwt.verify(payload, env('JWT_SERECT'), (error, data) => {
+			if (error) {
+				return response(null, httpStatus.UNAUTHORIZED, httpStatus['401']);
+			} else {
+				// jwt.;
+			}
+		});
 	} catch (error) {
 		throw new Error(error);
 	}
