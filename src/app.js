@@ -21,14 +21,14 @@ connectDB()
 
 function startApp() {
 	const app = express();
-	const port = env('APP_PORT') || 3001;
+	const port = env('APP_PORT');
 
 	app.use(morgan('tiny'));
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
 	app.use('/api', api);
 
-	app.listen(port, () => {
+	app.listen(port || 3000, () => {
 		console.log(`Server running ${env('APP_HOST')}:${port}`);
 	});
 
