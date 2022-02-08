@@ -22,7 +22,7 @@ connectDB()
 function startApp() {
 	const app = express();
 	const port =
-		env('APP_PORT') || process.env.PORT || process.env.APP_PORT || 5000;
+		 process.env.PORT || env('APP_PORT')
 
 	app.use(morgan('tiny'));
 	app.use(express.json());
