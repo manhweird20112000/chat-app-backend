@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import { connectDB } from './config/database.config';
 import { env } from './utils/helper.utils';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import morgan from 'morgan';
 import { api } from './routes';
 
@@ -21,9 +22,10 @@ connectDB()
 
 function startApp() {
 	const app = express();
-	const port =
-		 process.env.PORT || env('APP_PORT')
 
+	const port = process.env.PORT || env('APP_PORT');
+
+	app.use(cors());
 	app.use(morgan('tiny'));
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
