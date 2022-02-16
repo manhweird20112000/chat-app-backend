@@ -125,25 +125,24 @@ async function logout(payload) {
 
 async function refreshToken(payload) {
 	try {
-		if (!tokenList.includes(payload.refreshToken)) {
-			return response(null, httpStatus[403], httpStatus.UNAUTHORIZED);
-		} else {
-			jwt.verify(payload.refreshToken, env('JWT_SERECT'), (error, data) => {
-				if (error) {
-					return response(null, httpStatus[403], httpStatus.UNAUTHORIZED);
-				} else {
-					const { iat, exp, ...user } = data;
-					const accessToken = jwt.sign({ ...user }, env('JWT_SERECT'), {
-						expiresIn: env('ACCESS_TOKEN_LIFE'),
-					});
-					return response(
-						{ accessToken: accessToken },
-						httpStatus[200],
-						httpStatus.OK
-					);
-				}
-			});
-		}
+		let res;
+		jwt.verify(payload.refreshToken, env('JWT_SERECT'), (error, data) => {
+			if (error) {
+				res = response(null, httpStatus[403], httpStatus.UNAUTHORIZED);
+			} else {
+				const { iat, exp, ...user } = data;
+				const accessToken = jwt.sign({ ...user }, env('JWT_SERECT'), {
+					expiresIn: env('ACCESS_TOKEN_LIFE'),
+				});
+				res = response(
+					{ accessToken: accessToken },
+					httpStatus[200],
+					httpStatus.OK
+				);
+			}
+		});
+
+		return res;
 	} catch (error) {
 		throw new Error(error);
 	}
