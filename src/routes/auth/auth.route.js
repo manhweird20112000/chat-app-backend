@@ -6,12 +6,18 @@ import {
 	authLogin,
 	authRegister,
 	logout,
+	rememberToken,
 } from '../../validations/auth.validations';
 
 const router = Router();
 
 router.post('/register', validate(authRegister), AuthController.register);
 router.post('/login', validate(authLogin), AuthController.login);
+router.post(
+	'/refreshToken',
+	validate(rememberToken),
+	AuthController.refreshToken
+);
 router.post('/logout', auth, validate(logout), AuthController.logout);
 
 export const AuthRoute = router;

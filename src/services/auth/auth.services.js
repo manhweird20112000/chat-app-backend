@@ -16,6 +16,8 @@ import { v1, v4 } from 'uuid';
 import { User } from '../../models';
 import jwt from 'jsonwebtoken';
 
+const tokenList = [];
+
 async function register(payload) {
 	try {
 		const { email } = payload;
@@ -30,19 +32,31 @@ async function register(payload) {
 			payload.username = v1();
 			payload.uuid = v4();
 
-			const refeshToken = jwt.sign(
+			const refreshToken = jwt.sign(
 				{ ...payload, password: null },
 				env('JWT_SERECT'),
 				{ expiresIn: env('REFRESH_TOKEN_LIFE') }
 			);
 
-			payload.rememberToken = refeshToken;
+			const token = jwt.sign(
+				{ ...payload, password: null },
+				env('JWT_SERECT'),
+				{ expiresIn: env('ACCESS_TOKEN_LIFE') }
+			);
+
+			payload.rememberToken = refreshToken;
 
 			const user = new User(payload);
 			await user.save();
 
 			return response(
-				{ ...payload, password: null },
+				{
+					...payload,
+					password: null,
+					rememberToken: null,
+					accessToken: token,
+					refreshToken,
+				},
 				httpStatus.CREATED,
 				httpStatus[201]
 			);
@@ -73,21 +87,24 @@ async function login(payload) {
 					gender: exist.gender,
 					birthday: exist.birthday,
 					username: exist.username,
+					uuid: exist.uuid,
 					id: exist.id,
 				};
 				const token = jwt.sign(user, env('JWT_SERECT'), {
 					expiresIn: env('ACCESS_TOKEN_LIFE'),
 				});
 
+				tokenList.push(exist.rememberToken);
+
 				return response(
-					{ ...user, accessToken: token },
+					{ ...user, accessToken: token, refreshToken: exist.rememberToken },
 					httpStatus.OK,
 					httpStatus[200]
 				);
 			}
 		}
 	} catch (error) {
-		console.log(error)
+		console.log(error);
 		throw new Error(error);
 	}
 }
@@ -106,4 +123,30 @@ async function logout(payload) {
 	}
 }
 
-export const AuthServices = { register, login, logout };
+async function refreshToken(payload) {
+	try {
+		if (!tokenList.includes(payload.refreshToken)) {
+			return response(null, httpStatus[403], httpStatus.UNAUTHORIZED);
+		} else {
+			jwt.verify(payload.refreshToken, env('JWT_SERECT'), (error, data) => {
+				if (error) {
+					return response(null, httpStatus[403], httpStatus.UNAUTHORIZED);
+				} else {
+					const { iat, exp, ...user } = data;
+					const accessToken = jwt.sign({ ...user }, env('JWT_SERECT'), {
+						expiresIn: env('ACCESS_TOKEN_LIFE'),
+					});
+					return response(
+						{ accessToken: accessToken },
+						httpStatus[200],
+						httpStatus.OK
+					);
+				}
+			});
+		}
+	} catch (error) {
+		throw new Error(error);
+	}
+}
+
+export const AuthServices = { register, login, logout, refreshToken };

@@ -22,3 +22,9 @@ export const logout = {
 		token: Joi.string().required(),
 	}),
 };
+
+export const rememberToken = {
+	body: Joi.object().keys({
+		refreshToken: Joi.string().required(),
+	}),
+};

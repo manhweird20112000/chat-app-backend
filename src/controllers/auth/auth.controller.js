@@ -27,7 +27,6 @@ async function login(req, res, next) {
 
 async function logout(req, res, next) {
 	try {
-		console.log(req.user);
 		const response = await AuthServices.logout(req.body);
 		res.status(httpStatus.OK).json(response);
 	} catch (error) {
@@ -38,4 +37,15 @@ async function logout(req, res, next) {
 	}
 }
 
-export const AuthController = { register, login, logout };
+async function refreshToken(req, res, next) {
+	try {
+		const response = await AuthServices.refreshToken(req.body);
+		res.status(httpStatus.OK).json(response);
+	} catch (error) {
+		res
+			.status(httpStatus.INTERNAL_SERVER_ERROR)
+			.json(response(null, httpStatus.INTERNAL_SERVER_ERROR, httpStatus[500]));
+	}
+}
+
+export const AuthController = { register, login, logout, refreshToken };
