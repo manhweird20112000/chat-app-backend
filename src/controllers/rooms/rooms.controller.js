@@ -33,7 +33,7 @@ const index = async (req, res, next) => {
 const remove = async (req, res, next) => {
 	try {
 		const response = await RoomsServices.remove({
-			body: req.body,
+			params: req.params,
 			middleware: req.user,
 		});
 		res.status(httpStatus.OK).json(response);

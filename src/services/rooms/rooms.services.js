@@ -86,9 +86,21 @@ const index = async ({ params, middleware }) => {
 	}
 };
 
-const remove = async ({ body, middleware }) => {
+const remove = async ({ params, middleware }) => {
 	try {
-		console.log(body);
+		const { id } = params;
+		const exist = await Rooms.find({
+			receiver: id,
+			ownerId: middleware.id,
+		}).exec();
+
+		if (!exist) {
+			return response(null, httpStatus.NOT_FOUND, httpStatus[404]);
+		} else {
+			await Rooms.deleteOne({ receiver: id, ownerId: middleware.id });
+
+			return response(httpStatus[200], httpStatus.OK, httpStatus[200]);
+		}
 	} catch (error) {
 		throw new Error(error);
 	}
