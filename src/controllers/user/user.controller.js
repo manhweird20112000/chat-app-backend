@@ -12,7 +12,11 @@ async function list(req, res, next) {
 			.json(response(null, httpStatus.INTERNAL_SERVER_ERROR, httpStatus[500]));
 	}
 }
+
+async function uploadAvatar(req, res, next) {
+	
+}
 async function rename(req, res, next) {}
 async function nickName(req, res, next) {}
-async function changeAvatar(req, res, next) {}
-export const UserController = { list, rename, nickName, changeAvatar };
+
+export const UserController = { list, rename, nickName, uploadAvatar };

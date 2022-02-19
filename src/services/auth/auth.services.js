@@ -31,6 +31,7 @@ async function register(payload) {
 			payload.status = STATUS_ACTIVE;
 			payload.username = v1();
 			payload.uuid = v4();
+			payload.fullname = payload.firstName + ' ' + payload.lastName;
 
 			const refreshToken = jwt.sign(
 				{ ...payload, password: null },

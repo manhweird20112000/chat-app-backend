@@ -36,4 +36,12 @@ async function list({ query }) {
 	}
 }
 
+async function uploadAvatar() {
+	try {
+		
+	} catch (error) {
+		throw new Error(error);
+	}
+}
+
 export const UserServices = { list };

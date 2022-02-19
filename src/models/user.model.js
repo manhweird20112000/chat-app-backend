@@ -5,7 +5,7 @@ const schema = new Schema(
 		firstName: { type: String, required: true, trim: true },
 		lastName: { type: String, required: true, trim: true },
 		fullName: { type: String, required: true },
-		avatar: { type: String },
+		avatar: { type: String, default: 'DEFAULT' },
 		username: { type: String, required: true },
 		birthday: { type: Date, required: true },
 		email: { type: String, unique: true, required: true },
