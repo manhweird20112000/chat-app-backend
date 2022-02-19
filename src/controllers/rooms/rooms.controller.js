@@ -19,7 +19,7 @@ const create = async (req, res, next) => {
 const index = async (req, res, next) => {
 	try {
 		const response = await RoomsServices.index({
-			params: req.params,
+			query: req.query,
 			middleware: req.user,
 		});
 		res.status(httpStatus.OK).json(response);

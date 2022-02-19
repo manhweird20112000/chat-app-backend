@@ -47,9 +47,9 @@ const create = async (payload) => {
 	}
 };
 
-const index = async ({ params, middleware }) => {
+const index = async ({ query, middleware }) => {
 	try {
-		const { name, skip, limit } = params;
+		const { skip, limit } = query;
 		const data = await Rooms.aggregate([
 			{ $match: { ownerId: Types.ObjectId(middleware.id) } },
 			{
@@ -61,8 +61,8 @@ const index = async ({ params, middleware }) => {
 				},
 			},
 		])
-			.limit(20)
-			.skip(0)
+			.limit(limit)
+			.skip(skip)
 			.exec();
 		console.log(data);
 

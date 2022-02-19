@@ -6,15 +6,15 @@ export const createRooms = {
 	}),
 };
 
-// export const listRooms = {
-// 	params: Joi.object().keys({
-// 		limit: Joi.defaults(25),
-// 		skip: Joi.defaults(0),
-// 	}),
-// };
+export const list = {
+	query: Joi.object().keys({
+		skip: Joi.number().default(0),
+		limit: Joi.number().default(50),
+	}),
+};
 
-// export const remove = {
-// 	body: Joi.object().keys({
-// 		id: Joi.string().required(),
-// 	}),
-// };
+export const remove = {
+	body: Joi.object().keys({
+		id: Joi.string().required(),
+	}),
+};
