@@ -64,7 +64,6 @@ const index = async ({ query, middleware }) => {
 			.limit(limit)
 			.skip(skip)
 			.exec();
-		console.log(data);
 
 		let rooms = [];
 
@@ -81,7 +80,6 @@ const index = async ({ query, middleware }) => {
 
 		return response(rooms, httpStatus.OK, httpStatus[200]);
 	} catch (error) {
-		console.log(error);
 		throw new Error(error);
 	}
 };
