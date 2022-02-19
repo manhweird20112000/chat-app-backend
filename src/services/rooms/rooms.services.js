@@ -61,8 +61,8 @@ const index = async ({ params, middleware }) => {
 				},
 			},
 		])
-			.limit(limit)
-			.skip(skip)
+			.limit(20)
+			.skip(0)
 			.exec();
 		console.log(data);
 
