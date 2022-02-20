@@ -20,17 +20,17 @@ export const upload = multer({
 			);
 		},
 
-		// fileFilter: (req, file, callback) => {
-		// 	let ext = path.extname(file.originalname);
-		// 	if (
-		// 		ext !== '.png' &&
-		// 		ext !== '.jpg' &&
-		// 		ext !== '.gif' &&
-		// 		ext !== '.jpeg'
-		// 	) {
-		// 		return callback(/*res.end('Only images are allowed')*/ null, false);
-		// 	}
-		// 	callback(null, true);
-		// },
+		fileFilter: (req, file, callback) => {
+			let ext = path.extname(file.originalname);
+			if (
+				ext !== '.png' &&
+				ext !== '.jpg' &&
+				ext !== '.gif' &&
+				ext !== '.jpeg'
+			) {
+				return callback(/*res.end('Only images are allowed')*/ null, false);
+			}
+			callback(null, true);
+		},
 	}),
 });
