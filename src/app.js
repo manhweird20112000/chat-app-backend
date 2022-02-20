@@ -28,9 +28,9 @@ function startApp() {
 	const app = express();
 	const server = http.createServer(app);
 
-	const io = new Server(server, { cors: { origin: '*' } });
+	const io = new Server(server);
 
-	io.on('connection', () => {
+	io.on('connection', (socket) => {
 		console.log('connect');
 	});
 
@@ -43,28 +43,44 @@ function startApp() {
 		gfs.collection('photos');
 	});
 
-	app.use(cors({ credentials: true }));
+	app.use(
+		cors({
+			origin: '*',
+		})
+	);
 	app.use(morgan('tiny'));
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
 	app.use('/api', api);
 
-	app.listen(port, () => {
+	server.listen(port, () => {
 		console.log(`Server running ${env('APP_HOST')}:${port}`);
-	});
-
-	app.get('/', (req, res) => {
-		res.status(httpStatus.OK).json({ message: 'Chào mừng' });
 	});
 
 	app.use(function (req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');
-		res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-		res.header('Access-Control-Allow-Headers', 'Content-Type');
 		res.header(
-			'Access-Control-Allow-Methods',
-			'PUT, GET, POST, DELETE, OPTIONS'
+			'Access-Control-Allow-Headers',
+			'Origin, X-Requested-With, Content-Type, Accept'
 		);
 		next();
+	});
+
+	app.use(function (req, res, next) {
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		res.setHeader(
+			'Access-Control-Allow-Methods',
+			'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+		);
+		res.setHeader(
+			'Access-Control-Allow-Headers',
+			'X-Requested-With,content-type'
+		);
+		res.setHeader('Access-Control-Allow-Credentials', true);
+		next();
+	});
+
+	app.get('/', (req, res) => {
+		res.status(httpStatus.OK).json({ message: 'Chào mừng' });
 	});
 }
