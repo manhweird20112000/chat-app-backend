@@ -8,6 +8,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { api } from './routes';
 import mongoose from 'mongoose';
+import http from 'http';
+import { Server } from 'socket.io';
 
 dotenv.config();
 
@@ -24,6 +26,13 @@ connectDB()
 
 function startApp() {
 	const app = express();
+	const server = http.createServer(app);
+
+	const io = new Server(server);
+
+	io.on('connection', () => {
+		console.log('connect');
+	});
 
 	const port = process.env.PORT || env('APP_PORT');
 
@@ -39,16 +48,6 @@ function startApp() {
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
 	app.use('/api', api);
-
-	app.get('/file/:filename', async (req, res) => {
-		try {
-			const file = await gfs.files.findOne({ filename: req.params.filename });
-			const readStream = gfs.createReadStream(file.filename);
-			readStream.pipe(res);
-		} catch (error) {
-			res.send('not found');
-		}
-	});
 
 	app.listen(port, () => {
 		console.log(`Server running ${env('APP_HOST')}:${port}`);
