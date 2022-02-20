@@ -28,7 +28,7 @@ function startApp() {
 	const app = express();
 	const server = http.createServer(app);
 
-	const io = new Server(server);
+	const io = new Server(server, { cors: { origin: '*' } });
 
 	io.on('connection', () => {
 		console.log('connect');
@@ -43,7 +43,7 @@ function startApp() {
 		gfs.collection('photos');
 	});
 
-	app.use(cors());
+	app.use(cors({ credentials: true }));
 	app.use(morgan('tiny'));
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
@@ -55,5 +55,16 @@ function startApp() {
 
 	app.get('/', (req, res) => {
 		res.status(httpStatus.OK).json({ message: 'Chào mừng' });
+	});
+
+	app.use(function (req, res, next) {
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+		res.header('Access-Control-Allow-Headers', 'Content-Type');
+		res.header(
+			'Access-Control-Allow-Methods',
+			'PUT, GET, POST, DELETE, OPTIONS'
+		);
+		next();
 	});
 }
