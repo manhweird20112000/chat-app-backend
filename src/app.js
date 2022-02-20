@@ -48,6 +48,7 @@ function startApp() {
 			origin: '*',
 			methods: ['GET', 'POST'],
 			allowedHeaders: ['Content-Type'],
+			credentials: true,
 		})
 	);
 	app.options('*', cors({ origin: '*' }));
@@ -67,7 +68,7 @@ function startApp() {
 			'Access-Control-Allow-Headers',
 			'Origin, X-Requested-With, Content-Type, Accept'
 		);
-		next()
+		next();
 	});
 
 	app.use(function (req, res, next) {
