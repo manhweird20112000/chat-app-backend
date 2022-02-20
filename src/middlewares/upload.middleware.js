@@ -1,24 +1,36 @@
 import multer from 'multer';
-import { GridFsStorage } from 'multer-gridfs-storage';
-import { v1 } from 'uuid';
-import { env } from '../utils/helper.utils';
+import fs from 'fs';
+import { v4 } from 'uuid';
+import path from 'path';
 
-const storage = new GridFsStorage({
-	url: `mongodb+srv://dinhvanmanh:dinhvanmanh@cluster0.qy1kp.mongodb.net/chat?retryWrites=true&w=majority`,
-	options: { useNewUrlParser: true, useUnifiedTopology: true },
-	file: (req, file) => {
-		const match = ['image/png', 'image/jpeg'];
+export const upload = multer({
+	storage: multer.diskStorage({
+		destination: (req, file, callback) => {
+			if (!fs.existsSync('/uploads')) {
+				fs.mkdirSync('/uploads');
+			}
 
-		if (match.indexOf(file.mimetype) === -1) {
-			const filename = `${v1()}-hsweird-${file.originalname}`;
-			return filename;
-		}
+			callback(null, './uploads');
+		},
 
-		return {
-			bucketName: 'photos',
-			filename: `${v1()}-hsweird-${file.originalname}`,
-		};
-	},
+		filename: (req, file, callback) => {
+			callback(
+				null,
+				file.fieldname + '-' + v4() + path.extname(file.originalname)
+			);
+		},
+
+		// fileFilter: (req, file, callback) => {
+		// 	let ext = path.extname(file.originalname);
+		// 	if (
+		// 		ext !== '.png' &&
+		// 		ext !== '.jpg' &&
+		// 		ext !== '.gif' &&
+		// 		ext !== '.jpeg'
+		// 	) {
+		// 		return callback(/*res.end('Only images are allowed')*/ null, false);
+		// 	}
+		// 	callback(null, true);
+		// },
+	}),
 });
-
-export const upload = multer({ storage });

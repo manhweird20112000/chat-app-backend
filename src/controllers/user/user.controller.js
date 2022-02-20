@@ -15,6 +15,7 @@ async function list(req, res, next) {
 }
 
 async function uploadAvatar(req, res, next) {
+	console.log(req.files)
 	try {
 		const response = await UserServices.uploadAvatar({
 			file: req.file,

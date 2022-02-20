@@ -9,7 +9,7 @@ router.get('/list', auth, UserController.list);
 router.post(
 	'/upload-avatar',
 	auth,
-	upload.single('file'),
+	upload.single('avatar'),
 	UserController.uploadAvatar
 );
 router.get('/avatar/:filename', UserController.showAvatar);

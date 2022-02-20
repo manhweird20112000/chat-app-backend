@@ -38,14 +38,14 @@ async function list({ query }) {
 
 async function uploadAvatar({ file, middleware }) {
 	try {
-		if (file === undefined) return res.send('you must select a file.');
-		const url = `${env('APP_MEDIA_URL')}/file/${file.filename}`;
+		// if (file === undefined) return res.send('you must select a file.');
+		// const url = `${env('APP_MEDIA_URL')}/file/${file.filename}`;
 
-		await User.findByIdAndUpdate(middleware.id, { $set: { avatar: url } });
+		// await User.findByIdAndUpdate(middleware.id, { $set: { avatar: url } });
 
-		return response({ avatar: url }, httpStatus.OK, httpStatus[200]);
+		return response({ avatar: '' }, httpStatus.OK, httpStatus[200]);
 	} catch (error) {
-		console.log(error)
+		console.log(error);
 		throw new Error(error);
 	}
 }
