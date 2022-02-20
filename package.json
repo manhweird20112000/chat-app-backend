@@ -27,6 +27,7 @@
     "dotenv": "^16.0.0",
     "eslint": "^8.8.0",
     "express": "^4.17.2",
+    "gridfs-stream": "^1.1.1",
     "http-status": "^1.5.0",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
@@ -36,6 +37,7 @@
     "mongoose": "^6.2.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
+    "multer-gridfs-storage": "^5.0.2",
     "nodemon": "^2.0.15",
     "uuid": "^8.3.2"
   }
