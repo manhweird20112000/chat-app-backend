@@ -46,8 +46,12 @@ function startApp() {
 	app.use(
 		cors({
 			origin: '*',
+			methods: ['GET', 'POST'],
+			allowedHeaders: ['Content-Type'],
 		})
 	);
+	app.options('*', cors({ origin: '*' }));
+
 	app.use(morgan('tiny'));
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
@@ -63,7 +67,7 @@ function startApp() {
 			'Access-Control-Allow-Headers',
 			'Origin, X-Requested-With, Content-Type, Accept'
 		);
-		next();
+		next()
 	});
 
 	app.use(function (req, res, next) {
