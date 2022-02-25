@@ -10,6 +10,7 @@ import { api } from './routes';
 import mongoose from 'mongoose';
 import http from 'http';
 import { Server } from 'socket.io';
+import { MediaServices } from './services';
 
 dotenv.config();
 
@@ -56,5 +57,16 @@ function startApp() {
 
 	app.get('/', (req, res) => {
 		res.status(httpStatus.OK).json({ message: 'Chào mừng' });
+	});
+
+	app.get('/file/:id', async (req, res) => {
+		try {
+			let rootFolder = __dirname.split('src');
+
+			const media = await MediaServices.show(req.params.id);
+			res.sendFile(rootFolder[0] + media.path);
+		} catch (error) {
+			res.status(httpStatus.NOT_FOUND);
+		}
 	});
 }

@@ -12,8 +12,5 @@ router.post(
 	upload.single('avatar'),
 	UserController.uploadAvatar
 );
-router.get('/avatar/:filename', (req, res) => {
-	res.json({ message: 'Nothing' }).status(200);
-});
 
 export const UserRoutes = router;

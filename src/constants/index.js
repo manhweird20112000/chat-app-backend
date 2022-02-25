@@ -7,3 +7,5 @@ export const STATUS_INACTIVE = 'INACTIVE';
 
 export const TYPE_ROOM_EXIST = 'EXIST';
 // export const TYPE_ROOM_NOT_EXIST = 'NOT_EXIST';
+
+export const DISK_MEDIA = `./uploads`;

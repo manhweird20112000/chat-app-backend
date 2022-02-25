@@ -2,22 +2,20 @@ import multer from 'multer';
 import fs from 'fs';
 import { v4 } from 'uuid';
 import path from 'path';
+import { DISK_MEDIA } from '../constants';
 
 export const upload = multer({
 	storage: multer.diskStorage({
 		destination: (req, file, callback) => {
-			if (!fs.existsSync('/uploads')) {
-				fs.mkdirSync('/uploads');
+			if (!fs.existsSync(DISK_MEDIA)) {
+				fs.mkdirSync(DISK_MEDIA);
 			}
 
-			callback(null, './uploads');
+			callback(null, DISK_MEDIA);
 		},
 
 		filename: (req, file, callback) => {
-			callback(
-				null,
-				file.fieldname + '-' + v4() + path.extname(file.originalname)
-			);
+			callback(null, v4() + path.extname(file.originalname));
 		},
 
 		fileFilter: (req, file, callback) => {

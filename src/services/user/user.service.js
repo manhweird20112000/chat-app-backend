@@ -1,7 +1,8 @@
 import httpStatus from 'http-status';
+import { MediaServices } from '..';
 import { STATUS_ACTIVE } from '../../constants';
 import { User } from '../../models';
-import { env, response } from '../../utils/helper.utils';
+import { response } from '../../utils/helper.utils';
 
 async function list({ query }) {
 	try {
@@ -38,14 +39,12 @@ async function list({ query }) {
 
 async function uploadAvatar({ file, middleware }) {
 	try {
-		// if (file === undefined) return res.send('you must select a file.');
-		// const url = `${env('APP_MEDIA_URL')}/file/${file.filename}`;
-
-		// await User.findByIdAndUpdate(middleware.id, { $set: { avatar: url } });
-
-		return response({ avatar: '' }, httpStatus.OK, httpStatus[200]);
+		const avatar = await MediaServices.upload(file, 'IMAGE');
+		await User.findByIdAndUpdate(middleware.id, {
+			$set: { avatar: avatar },
+		});
+		return response({ avatar: avatar }, httpStatus.OK, httpStatus[200]);
 	} catch (error) {
-		console.log(error);
 		throw new Error(error);
 	}
 }
