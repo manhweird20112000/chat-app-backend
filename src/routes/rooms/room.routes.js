@@ -5,7 +5,6 @@ import { validate } from '../../utils/helper.utils';
 import {
 	createRooms,
 	list,
-	listRooms,
 } from '../../validations/room.validation';
 
 const router = Router();

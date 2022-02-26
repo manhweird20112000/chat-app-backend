@@ -1,10 +1,9 @@
 import httpStatus from 'http-status';
-import { object } from 'joi';
-import { Types } from 'mongoose';
 import { v4 } from 'uuid';
 import { TYPE_ROOM_EXIST } from '../../constants';
 import { Rooms, User } from '../../models';
 import { response } from '../../utils/helper.utils';
+import { Types } from 'mongoose';
 
 const create = async (payload) => {
 	try {
@@ -46,7 +45,6 @@ const create = async (payload) => {
 			);
 		}
 	} catch (error) {
-		console.log(error);
 		throw new Error(error);
 	}
 };
@@ -55,8 +53,15 @@ const index = async ({ query, middleware }) => {
 	try {
 		const { skip, limit } = query;
 		const data = await Rooms.aggregate([
-			// {$project: },
 			{ $match: { ownerId: Types.ObjectId(middleware.id) } },
+			{ $skip: skip },
+			{ $limit: limit },
+			// {
+			// 	$unwind: {
+			// 		path: '$users',
+			// 		preserveNullAndEmptyArrays: true,
+			// 	},
+			// },
 			{
 				$lookup: {
 					from: 'users',
@@ -65,10 +70,45 @@ const index = async ({ query, middleware }) => {
 					as: 'user',
 				},
 			},
-		])
-			.limit(limit)
-			.skip(skip)
-			.exec();
+			{
+				$unwind: {
+					path: '$messages',
+					preserveNullAndEmptyArrays: true,
+				},
+			},
+			{
+				$lookup: {
+					from: 'messages',
+					localField: 'messages.roomId',
+					foreignField: 'rooms.roomId',
+					as: 'messages',
+				},
+			},
+			{ $sort: { 'messages.createdAt': -1 } },
+			{
+				$project: {
+					roomId: 1,
+					color: 1,
+					ownerId: 1,
+					ownerId: 1,
+					receiver: 1,
+					user: {
+						fullName: 1,
+						_id: 1,
+						avatar: 1,
+						username: 1,
+					},
+					messages: {
+						_id: 1,
+						message: 1,
+						type: 1,
+						status: 1,
+						createdAt: 1,
+						ownerId: 1,
+					},
+				},
+			},
+		]).exec();
 
 		let rooms = [];
 
