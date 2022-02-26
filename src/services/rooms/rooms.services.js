@@ -84,7 +84,7 @@ const index = async ({ query, middleware }) => {
 					as: 'messages',
 				},
 			},
-			{ $sort: { 'messages.createdAt': -1 } },
+
 			{
 				$project: {
 					roomId: 1,
@@ -108,22 +108,24 @@ const index = async ({ query, middleware }) => {
 					},
 				},
 			},
+			{ $sort: { 'messages.createdAt': 1 } },
 		]).exec();
 
 		let rooms = [];
 
-		// data.forEach((object) => {
-		// 	const { __v, createdAt, updatedAt, ...room } = object;
-		// 	rooms.push({
-		// 		...room,
-		// 		user: {
-		// 			fullname: room.user[0].firstName + ' ' + room.user[0].lastName,
-		// 			id: room.receiver,
-		// 		},
-		// 	});
-		// });
+		data.forEach((object) => {
+			rooms.push({
+				...object,
+				user: {
+					...object.user[0],
+				},
+				messages: {
+					...object.messages[object.messages.length - 1],
+				},
+			});
+		});
 
-		return response(data, httpStatus.OK, httpStatus[200]);
+		return response(rooms, httpStatus.OK, httpStatus[200]);
 	} catch (error) {
 		console.log(error);
 		throw new Error(error);
