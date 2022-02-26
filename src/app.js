@@ -1,13 +1,11 @@
 import express from 'express';
 import httpStatus from 'http-status';
-import Grid from 'gridfs-stream';
 import { connectDB } from './config/database.config';
 import { env } from './utils/helper.utils';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import { api } from './routes';
-import mongoose from 'mongoose';
 import http from 'http';
 import { Server } from 'socket.io';
 import { MediaServices } from './services';
@@ -36,13 +34,6 @@ function startApp() {
 	});
 
 	const port = process.env.PORT || env('APP_PORT');
-
-	let gfs;
-	const conn = mongoose.connection;
-	conn.once('open', function () {
-		gfs = Grid(conn.db, mongoose.mongo);
-		gfs.collection('photos');
-	});
 
 	app.use(cors());
 

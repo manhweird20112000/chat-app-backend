@@ -90,6 +90,7 @@ async function login(payload) {
 					username: exist.username,
 					uuid: exist.uuid,
 					id: exist.id,
+					avatar: exist.avatar ? exist.avatar : '',
 				};
 				const token = jwt.sign(user, env('JWT_SERECT'), {
 					expiresIn: env('ACCESS_TOKEN_LIFE'),
@@ -105,7 +106,6 @@ async function login(payload) {
 			}
 		}
 	} catch (error) {
-		console.log(error);
 		throw new Error(error);
 	}
 }

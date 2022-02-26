@@ -32,7 +32,6 @@ async function list({ query }) {
 
 		return response(users, httpStatus.OK, httpStatus[200]);
 	} catch (error) {
-		console.log(error);
 		throw new Error(error);
 	}
 }

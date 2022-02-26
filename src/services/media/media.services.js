@@ -2,9 +2,6 @@ import { Media } from '../../models';
 
 const upload = async (payload, type = 'IMAGE') => {
 	try {
-		// let pathFile = path.indexOf('src');
-		// console.log(pathFile);
-
 		const media = new Media({
 			type,
 			size: payload.size,
