@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import { object } from 'joi';
 import { Types } from 'mongoose';
+import { v4 } from 'uuid';
 import { TYPE_ROOM_EXIST } from '../../constants';
 import { Rooms, User } from '../../models';
 import { response } from '../../utils/helper.utils';
@@ -22,16 +23,19 @@ const create = async (payload) => {
 				httpStatus[409]
 			);
 		} else {
+			const roomId = v4() + '-20112000';
 			const result = await Rooms.insertMany([
 				{
 					ownerId: middleware.id,
 					receiver: receiver,
+					roomId: roomId,
 				},
-				{ ownerId: receiver, receiver: middleware.id },
+				{ ownerId: receiver, receiver: middleware.id, roomId: roomId },
 			]);
 
 			return response(
 				{
+					roomId,
 					color: result[0].color,
 					ownerId: result[0].ownerId,
 					ownerType: result[0].ownerType,
@@ -51,6 +55,7 @@ const index = async ({ query, middleware }) => {
 	try {
 		const { skip, limit } = query;
 		const data = await Rooms.aggregate([
+			// {$project: },
 			{ $match: { ownerId: Types.ObjectId(middleware.id) } },
 			{
 				$lookup: {
@@ -67,19 +72,20 @@ const index = async ({ query, middleware }) => {
 
 		let rooms = [];
 
-		data.forEach((object) => {
-			const { __v, createdAt, updatedAt, ...room } = object;
-			rooms.push({
-				...room,
-				user: {
-					fullname: room.user[0].firstName + ' ' + room.user[0].lastName,
-					id: room.receiver,
-				},
-			});
-		});
+		// data.forEach((object) => {
+		// 	const { __v, createdAt, updatedAt, ...room } = object;
+		// 	rooms.push({
+		// 		...room,
+		// 		user: {
+		// 			fullname: room.user[0].firstName + ' ' + room.user[0].lastName,
+		// 			id: room.receiver,
+		// 		},
+		// 	});
+		// });
 
-		return response(rooms, httpStatus.OK, httpStatus[200]);
+		return response(data, httpStatus.OK, httpStatus[200]);
 	} catch (error) {
+		console.log(error);
 		throw new Error(error);
 	}
 };

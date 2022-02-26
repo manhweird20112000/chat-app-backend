@@ -20,7 +20,7 @@ const list = async ({ query }) => {
 	try {
 		const { roomId, skip, limit } = query;
 		const listMessages = await Messages.aggregate([
-			{ $match: { roomId: Types.ObjectId(roomId) } },
+			{ $match: { roomId: roomId } },
 			{ $limit: limit },
 			{ $skip: skip },
 			{
@@ -41,7 +41,7 @@ const list = async ({ query }) => {
 				user: {
 					fullname: object.user[0].firstName + ' ' + object.user[0].lastName,
 					id: object.user[0]._id,
-					avatar: '',
+					avatar: object.user[0].avatar ? object.user[0].avatar : '',
 				},
 			});
 		});

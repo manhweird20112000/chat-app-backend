@@ -9,7 +9,7 @@ const schema = new Schema(
 			default: 'TEXT',
 			enum: ['TEXT', 'LINK', 'FILE'],
 		},
-		roomId: { type: Schema.Types.ObjectId, ref: 'Rooms', required: true },
+		roomId: { type: String, ref: 'Rooms', required: true },
 		ownerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 		status: {
 			type: String,
