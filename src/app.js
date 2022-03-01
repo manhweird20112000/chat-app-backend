@@ -33,7 +33,7 @@ function startApp() {
 	app.use(express.urlencoded({ extended: true }));
 	app.use('/api', api);
 
-	server.listen(port, () => {
+	app.listen(port, () => {
 		console.log(`Server running ${env('APP_HOST')}:${port}`);
 	});
 
