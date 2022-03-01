@@ -6,9 +6,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import { api } from './routes';
-import http from 'http';
-import { Server } from 'socket.io';
-import { MediaServices } from './services';
+import { MediaServices, server } from './services';
 
 dotenv.config();
 
@@ -25,13 +23,6 @@ connectDB()
 
 function startApp() {
 	const app = express();
-	const server = http.createServer(app);
-
-	const io = new Server(server, { cors: { origin: '*' } });
-
-	io.on('connection', (socket) => {
-		console.log('connect');
-	});
 
 	const port = process.env.PORT || env('APP_PORT');
 

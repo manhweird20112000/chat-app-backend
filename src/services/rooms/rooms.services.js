@@ -23,14 +23,25 @@ const create = async (payload) => {
 			);
 		} else {
 			const roomId = v4() + '-20112000';
-			const result = await Rooms.insertMany([
-				{
-					ownerId: middleware.id,
-					receiver: receiver,
-					roomId: roomId,
-				},
-				{ ownerId: receiver, receiver: middleware.id, roomId: roomId },
-			]);
+			let result;
+			if (receiver === middleware.id) {
+				result = await Rooms.insertMany([
+					{
+						ownerId: middleware.id,
+						receiver: receiver,
+						roomId: roomId,
+					},
+				]);
+			} else {
+				result = await Rooms.insertMany([
+					{
+						ownerId: middleware.id,
+						receiver: receiver,
+						roomId: roomId,
+					},
+					{ ownerId: receiver, receiver: middleware.id, roomId: roomId },
+				]);
+			}
 
 			return response(
 				{

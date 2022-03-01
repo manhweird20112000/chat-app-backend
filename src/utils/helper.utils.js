@@ -1,7 +1,6 @@
 import { compareSync, genSaltSync, hashSync } from 'bcrypt';
 import httpStatus from 'http-status';
 import moment from 'moment';
-import { ApiError } from './ApiError';
 import Joi from 'joi';
 
 export const env = (key) => {
