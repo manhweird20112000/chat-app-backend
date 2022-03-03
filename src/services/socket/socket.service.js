@@ -51,7 +51,6 @@ io.on('connection', (socket) => {
 
 	// Người dùng đang cào phím
 	socket.on('typing', (data) => {
-		console.log(data);
 		io.to(room).emit('typing', data);
 	});
 
