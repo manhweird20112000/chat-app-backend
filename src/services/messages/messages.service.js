@@ -31,6 +31,7 @@ const list = async ({ query }) => {
 					as: 'user',
 				},
 			},
+			{ $sort: { createdAt: -1} },
 		]).exec();
 
 		let messages = [];

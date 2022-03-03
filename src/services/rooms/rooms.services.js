@@ -85,8 +85,8 @@ const index = async ({ query, middleware }) => {
 			{
 				$lookup: {
 					from: 'messages',
-					localField: 'messages.roomId',
-					foreignField: 'rooms.roomId',
+					localField: 'roomId',
+					foreignField: 'roomId',
 					as: 'messages',
 				},
 			},
@@ -111,6 +111,7 @@ const index = async ({ query, middleware }) => {
 						status: 1,
 						createdAt: 1,
 						ownerId: 1,
+						roomId: 1,
 					},
 				},
 			},
