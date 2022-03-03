@@ -42,32 +42,37 @@ io.on('connection', (socket) => {
 
 		// Phát tín hiệu cho người khác mình vừa join room
 		socket.broadcast.to(roomId).emit('message', 'Hello !');
-	});
 
-	// Người dùng mới liên kết với nhau
-	socket.on('connectFriend', (data) => {
-		io.to(room).emit('connectFriend', data);
-	});
+		// Người dùng mới liên kết với nhau
+		socket.on('connectFriend', (data) => {
+			io.to(roomId).emit('connectFriend', data);
+		});
 
-	// Người dùng đang cào phím
-	socket.on('typing', (data) => {
-		io.to(room).emit('typing', data);
-	});
+		// Người dùng đang cào phím
+		socket.on('typing', (data) => {
+			io.to(roomId).emit('typing', data);
+		});
 
-	// Người dùng gửi tin nhắn
-	socket.on('send', (data) => {
-		io.to(room).emit('send', data);
-		io.emit('sendAll', data);
-	});
+		// Người dùng gửi tin nhắn
+		socket.on('send', (data) => {
+			io.to(roomId).emit('send', data);
+			io.emit('sendAll', data);
+		});
 
-	// Người dùng đọc tin nhắn
-	socket.on('read', (data) => {
-		io.to(room).emit('read', data);
-		io.emit('readAll', data);
-	});
+		// Người dùng đọc tin nhắn
+		socket.on('read', (data) => {
+			io.to(roomId).emit('read', data);
+			io.emit('readAll', data);
+		});
 
-	// Người dùng làm điều đặc biệt
-	socket.on('love', (data) => {
-		io.to(room).emit('send', data);
+		// Người dùng làm điều đặc biệt
+		socket.on('love', (data) => {
+			io.to(roomId).emit('send', data);
+		});
+
+		// Rời room
+		socket.on('leaveRoom', (data) => {
+			socket.leave(data);
+		});
 	});
 });
