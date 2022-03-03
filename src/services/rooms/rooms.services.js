@@ -56,6 +56,7 @@ const create = async (payload) => {
 			);
 		}
 	} catch (error) {
+		console.log(error);
 		throw new Error(error);
 	}
 };
@@ -67,12 +68,6 @@ const index = async ({ query, middleware }) => {
 			{ $match: { ownerId: Types.ObjectId(middleware.id) } },
 			{ $skip: skip },
 			{ $limit: limit },
-			// {
-			// 	$unwind: {
-			// 		path: '$users',
-			// 		preserveNullAndEmptyArrays: true,
-			// 	},
-			// },
 			{
 				$lookup: {
 					from: 'users',
@@ -138,7 +133,6 @@ const index = async ({ query, middleware }) => {
 
 		return response(rooms, httpStatus.OK, httpStatus[200]);
 	} catch (error) {
-		console.log(error);
 		throw new Error(error);
 	}
 };

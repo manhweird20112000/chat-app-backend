@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import { api } from './routes';
-import { MediaServices, server } from './services';
+import { app, MediaServices, server } from './services';
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ connectDB()
 	});
 
 function startApp() {
-	const app = express();
+	// const app = express();
 
 	const port = process.env.PORT || env('APP_PORT');
 
@@ -33,7 +33,7 @@ function startApp() {
 	app.use(express.urlencoded({ extended: true }));
 	app.use('/api', api);
 
-	app.listen(port, () => {
+	server.listen(port, () => {
 		console.log(`Server running ${env('APP_HOST')}:${port}`);
 	});
 
