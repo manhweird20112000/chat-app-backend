@@ -2,10 +2,12 @@ import { Router } from 'express';
 import { UserController } from '../../controllers';
 import { auth } from '../../middlewares/auth.middleware';
 import { upload } from '../../middlewares/upload.middleware';
+import { validate } from '../../utils/helper.utils';
+import { list } from '../../validations/user.validation';
 
 const router = Router();
 
-router.get('/list', auth, UserController.list);
+router.get('/list', validate(list), auth, UserController.list);
 router.post(
 	'/upload-avatar',
 	auth,

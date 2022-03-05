@@ -6,7 +6,7 @@ import { response } from '../../utils/helper.utils';
 
 async function list({ query }) {
 	try {
-		const { skip = 0, limit = 25, username } = query;
+		const { skip, limit, username } = query;
 		let params = { status: STATUS_ACTIVE };
 
 		if (username) {
