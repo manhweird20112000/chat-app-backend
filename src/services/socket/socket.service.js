@@ -3,6 +3,8 @@ import http from 'http';
 import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { env } from '../../utils/helper.utils';
+import { User } from '../../models';
+import { Types } from 'mongoose';
 
 export const app = express();
 
@@ -26,11 +28,31 @@ io.use(function (socket, next) {
 	}
 });
 
-
 // Events
 io.on('connection', (socket) => {
 	// check connecting
 	io.emit('connected', true);
+
+	// Lắng nghe user online
+	socket.on('online', async (data) => {
+		const { id } = data;
+		await User.updateOne(
+			{ _id: Types.ObjectId(id) },
+			{ $set: { isOnline: 'ONLINE' } }
+		);
+		io.emit('userOnline', { userId: id });
+	});
+
+	// Lắng nghe user offline;
+
+	socket.on('offline', async (data) => {
+		const { id } = data;
+		await User.updateOne(
+			{ _id: Types.ObjectId(id) },
+			{ $set: { isOnline: 'OFFLINE' } }
+		);
+		io.emit('userOffline', { userId: id });
+	});
 
 	// Lắng nghe sự kiện join room của người dùng
 	socket.on('joinRoom', (data) => {

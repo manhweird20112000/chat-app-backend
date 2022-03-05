@@ -20,3 +20,10 @@ export const remove = {
 		id: Joi.string().required(),
 	}),
 };
+
+export const read = {
+	body: Joi.object().keys({
+		roomId: Joi.string().required(),
+	}),
+};
+
