@@ -78,4 +78,15 @@ const remove = async ({ body }) => {
 	}
 };
 
-export const MessagesServices = { send, list, remove };
+const read = async ({ body }) => {
+	try {
+		const { roomId } = body;
+		await Messages.updateMany({ roomId: roomId }, { $set: { status: 'READ' } });
+		return response(httpStatus[200], httpStatus.OK, httpStatus[200]);
+	} catch (error) {
+		console.log(error);
+		throw new Error(error);
+	}
+};
+
+export const MessagesServices = { send, list, remove, read };

@@ -44,4 +44,19 @@ const remove = async (req, res, next) => {
 	}
 };
 
-export const MessagesControllers = { send, list, remove };
+const read = async (req, res, next) => {
+	try {
+		const response = await MessagesServices.read({
+			body: req.body,
+			middleware: req.user,
+		});
+		res.status(httpStatus.OK).json(response);
+	} catch (error) {
+		console.log(error)
+		res
+			.status(httpStatus.INTERNAL_SERVER_ERROR)
+			.json(response(null, httpStatus.INTERNAL_SERVER_ERROR, httpStatus[500]));
+	}
+};
+
+export const MessagesControllers = { send, list, remove, read };

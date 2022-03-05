@@ -8,6 +8,7 @@ const router = Router();
 
 router.get('/list', auth, validate(list), MessagesControllers.list);
 router.post('/send', auth, validate(send), MessagesControllers.send);
+router.post('/read', auth, MessagesControllers.read);
 router.delete('/delete', auth, validate(remove), MessagesControllers.remove);
 
 export const MessagesRoutes = router;
