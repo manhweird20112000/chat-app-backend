@@ -11,22 +11,21 @@ export const server = http.createServer(app);
 export const io = new Server(server, { cors: { origin: '*' } });
 
 // Middleware
-// io.use(function (socket, next) {
-// 	if (socket.handshake.query && socket.handshake.query.token) {
-// 		const token = socket.handshake.query.token.split(' ')[1];
-// 		jwt.verify(token, env('JWT_SERECT'), (error, data) => {
-// 			if (error) {
-// 				return new Error('Authorzation error.');
-// 			} else {
-// 				next();
-// 			}
-// 		});
-// 	} else {
-// 		next(new Error('Authentication error.'));
-// 	}
-// });
+io.use(function (socket, next) {
+	if (socket.handshake.query && socket.handshake.query.token) {
+		const token = socket.handshake.query.token.split(' ')[1];
+		jwt.verify(token, env('JWT_SERECT'), (error, data) => {
+			if (error) {
+				return new Error('Authorzation error.');
+			} else {
+				next();
+			}
+		});
+	} else {
+		next(new Error('Authentication error.'));
+	}
+});
 
-let room;
 
 // Events
 io.on('connection', (socket) => {
@@ -37,8 +36,6 @@ io.on('connection', (socket) => {
 	socket.on('joinRoom', (data) => {
 		const { roomId } = data;
 		socket.join(roomId);
-
-		room = roomId;
 
 		// Phát tín hiệu cho người khác mình vừa join room
 		socket.broadcast.to(roomId).emit('message', 'Hello !');

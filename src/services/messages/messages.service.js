@@ -31,7 +31,21 @@ const list = async ({ query }) => {
 					as: 'user',
 				},
 			},
-			{ $sort: { createdAt: -1} },
+			{
+				$project: {
+					message: 1,
+					roomId: 1,
+					status: 1,
+					createdAt: 1,
+					type: 1,
+					user: {
+						fullName: 1,
+						avatar: 1,
+						_id: 1,
+					},
+				},
+			},
+			{ $sort: { createdAt: -1 } },
 		]).exec();
 
 		let messages = [];
@@ -40,7 +54,7 @@ const list = async ({ query }) => {
 			messages.push({
 				...object,
 				user: {
-					fullname: object.user[0].firstName + ' ' + object.user[0].lastName,
+					fullname: object.user[0].fullName,
 					id: object.user[0]._id,
 					avatar: object.user[0].avatar ? object.user[0].avatar : '',
 				},
