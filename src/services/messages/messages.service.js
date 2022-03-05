@@ -38,6 +38,7 @@ const list = async ({ query }) => {
 					status: 1,
 					createdAt: 1,
 					type: 1,
+					ownerId: 1,
 					user: {
 						fullName: 1,
 						avatar: 1,
