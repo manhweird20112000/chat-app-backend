@@ -9,3 +9,7 @@ export const TYPE_ROOM_EXIST = 'EXIST';
 // export const TYPE_ROOM_NOT_EXIST = 'NOT_EXIST';
 
 export const DISK_MEDIA = `./uploads`;
+
+export const TYPE_UPDATE_USERNAME = 1;
+export const TYPE_UPDATE_FULLNAME = 2;
+export const TYPE_UPDATE_PASSWORD = 3;

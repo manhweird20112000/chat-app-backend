@@ -28,12 +28,22 @@ async function uploadAvatar(req, res, next) {
 	}
 }
 
-async function rename(req, res, next) {}
-async function nickName(req, res, next) {}
+async function updateInfo(req, res, next) {
+	try {
+		const response = await UserServices.updateInfo({
+			body: req.body,
+			middleware: req.user,
+		});
+		res.status(httpStatus.OK).json(response);
+	} catch (error) {
+		res
+			.status(httpStatus.INTERNAL_SERVER_ERROR)
+			.json(response(null, httpStatus.INTERNAL_SERVER_ERROR, httpStatus[500]));
+	}
+}
 
 export const UserController = {
 	list,
-	rename,
-	nickName,
 	uploadAvatar,
+	updateInfo,
 };
