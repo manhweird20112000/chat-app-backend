@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 
 const schema = new Schema(
 	{
-		roomId: { type: String, required: true },
+		roomId: { type: String, required: true, unique: true },
 		color: { type: String, default: '#f2484c', enum: ['#f2484c'] },
 		ownerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 		ownerType: { type: String, default: 'USER', enum: ['USER', 'GROUP'] },

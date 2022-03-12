@@ -16,8 +16,7 @@ const create = async (payload) => {
 				receiver: receiver,
 			},
 			{ roomId: 1, color: 1, ownerId: 1, ownerType: 1, receiver: 1 }
-		)
-		.exec();
+		).exec();
 
 		if (exist) {
 			return response(exist, httpStatus.OK, httpStatus[200]);
@@ -56,7 +55,6 @@ const create = async (payload) => {
 			);
 		}
 	} catch (error) {
-		console.log(error);
 		throw new Error(error);
 	}
 };
