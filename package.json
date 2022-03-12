@@ -27,6 +27,7 @@
     "dotenv": "^16.0.0",
     "eslint": "^8.8.0",
     "express": "^4.17.2",
+    "fcm-node": "^1.6.1",
     "gridfs-stream": "^1.1.1",
     "http-status": "^1.5.0",
     "joi": "^17.6.0",

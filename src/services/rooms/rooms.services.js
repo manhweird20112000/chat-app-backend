@@ -10,17 +10,17 @@ const create = async (payload) => {
 		const { body, middleware } = payload;
 		const { receiver } = body;
 
-		const exist = await Rooms.findOne({
-			ownerId: middleware.id,
-			receiver: receiver,
-		}).exec();
+		const exist = await Rooms.findOne(
+			{
+				ownerId: middleware.id,
+				receiver: receiver,
+			},
+			{ roomId: 1, color: 1, ownerId: 1, ownerType: 1, receiver: 1 }
+		)
+		.exec();
 
 		if (exist) {
-			return response(
-				{ type: TYPE_ROOM_EXIST },
-				httpStatus.CONFLICT,
-				httpStatus[409]
-			);
+			return response(exist, httpStatus.OK, httpStatus[200]);
 		} else {
 			const roomId = v4() + '-20112000';
 			let result;
