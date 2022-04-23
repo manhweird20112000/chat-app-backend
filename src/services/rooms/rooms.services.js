@@ -156,4 +156,18 @@ const remove = async ({ params, middleware }) => {
 	}
 };
 
-export const RoomsServices = { index, create, remove };
+const changeColor = async ({ middleware, body }) => {
+	try {
+		const { roomId, color } = body;
+		await Rooms.updateMany(
+			{ roomId: roomId },
+			{ $set: { color: color } }
+		).exec();
+
+		return response({ roomId, color }, httpStatus.OK, httpStatus[200]);
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
+export const RoomsServices = { index, create, remove, changeColor };

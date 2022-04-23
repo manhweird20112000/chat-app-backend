@@ -72,7 +72,7 @@ const remove = async ({ body }) => {
 	try {
 		const { id } = body;
 		await Messages.findByIdAndRemove(id);
-		return response(httpStatus[200], httpStatus.OK, httpStatus[200]);
+		return response({ id: id }, httpStatus.OK, httpStatus[200]);
 	} catch (error) {
 		throw new Error(error);
 	}

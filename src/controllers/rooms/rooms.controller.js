@@ -43,4 +43,20 @@ const remove = async (req, res, next) => {
 			.json(response(null, httpStatus.INTERNAL_SERVER_ERROR, httpStatus[500]));
 	}
 };
-export const RoomsController = { index, create, remove };
+
+const changeColor = async (req, res, next) => {
+	try {
+		const response = await RoomsServices.changeColor({
+			params: req.params,
+			middleware: req.user,
+			body: req.body,
+		});
+		res.status(httpStatus.OK).json(response);
+	} catch (error) {
+		res
+			.status(httpStatus.INTERNAL_SERVER_ERROR)
+			.json(response(null, httpStatus.INTERNAL_SERVER_ERROR, httpStatus[500]));
+	}
+};
+
+export const RoomsController = { index, create, remove, changeColor };

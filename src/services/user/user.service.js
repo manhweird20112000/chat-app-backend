@@ -93,4 +93,6 @@ async function updateInfo({ body, middleware, params, query }) {
 	}
 }
 
+
+
 export const UserServices = { list, uploadAvatar, updateInfo };

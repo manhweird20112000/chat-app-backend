@@ -43,8 +43,13 @@ io.on('connection', (socket) => {
 		io.emit('userOnline', { userId: id });
 	});
 
-	// Lắng nghe user offline;
+	// Lắng nghe login bằng QRCode
+	socket.on('qr', (data) => {
+		const { email, password } = data;
+		io.emit('qr', { email: email, password: password });
+	});
 
+	// Lắng nghe user offline;
 	socket.on('offline', async (data) => {
 		const { id } = data;
 		await User.updateOne(
@@ -87,6 +92,10 @@ io.on('connection', (socket) => {
 		// Người dùng làm điều đặc biệt
 		socket.on('love', (data) => {
 			io.to(roomId).emit('send', data);
+		});
+
+		socket.on('changeColor', (data) => {
+			io.to(roomId).emit('changeColor', data);
 		});
 
 		// Rời room

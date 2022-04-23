@@ -18,3 +18,9 @@ export const remove = {
 		id: Joi.string().required(),
 	}),
 };
+export const changeColor = {
+	body: Joi.object().keys({
+		roomId: Joi.string().required(),
+		color: Joi.string().required(),
+	}),
+};
